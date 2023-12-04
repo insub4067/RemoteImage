@@ -12,10 +12,7 @@ public extension UIImageView {
     
     func remoteImage(
         with url: URL,
-        cache: CacheType? = .memory,
-        withAnimation: Bool = true,
-        duration: CGFloat = 0.2,
-        option: AnimationOptions = .transitionCrossDissolve,
+        parameter: RemoteImageParamter = .init(),
         placeholder: (() -> UIImage)? = .none
     ) {
         
@@ -27,12 +24,12 @@ public extension UIImageView {
         let cachedImage = cacheManager.getImage(forKey: key)
         
         if let cachedImage {
-            switch withAnimation {
+            switch parameter.withAnimation {
             case true:
                 self.setImageWithTransition(
-                    image: image,
-                    duration: duration,
-                    option: option
+                    image: cachedImage,
+                    duration: parameter.duration,
+                    option: parameter.option
                 )
             case false:
                 self.image = image
@@ -47,24 +44,25 @@ public extension UIImageView {
             .sink(receiveCompletion: { _ in
                 cancellable?.cancel()
             }, receiveValue: { [weak self] image in
+                
                 guard let self = self, let image = image else { return }
                 
-                switch withAnimation {
+                switch parameter.withAnimation {
                 case true:
                     self.setImageWithTransition(
                         image: image,
-                        duration: duration,
-                        option: option
+                        duration: parameter.duration,
+                        option: parameter.option
                     )
                 case false:
                     self.image = image
                 }
                 
-                guard let cache else { return }
+                guard let cacheType = parameter.cacheType else { return }
                 cacheManager.setImage(
                     image,
                     forKey: key,
-                    cache: cache
+                    cacheType: cacheType
                 )
             })
     }
@@ -86,5 +84,25 @@ public extension UIImageView {
 
 public enum CacheType {
     case memory, disk
+}
+
+public struct RemoteImageParamter {
+    
+    public let cacheType: CacheType?
+    public let withAnimation: Bool
+    public let duration: CGFloat
+    public let option: UIView.AnimationOptions
+    
+    public init(
+        cacheType: CacheType? = .memory,
+        withAnimation: Bool = true,
+        duration: CGFloat = 0.2,
+        option: UIView.AnimationOptions = .transitionCrossDissolve
+    ) {
+        self.cacheType = cacheType
+        self.withAnimation = withAnimation
+        self.duration = duration
+        self.option = option
+    }
 }
 #endif

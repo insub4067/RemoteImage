@@ -9,21 +9,21 @@ import UIKit
 
 class MemoryCacheManager {
 
-    private var cache = NSCache<NSString, UIImage>()
+    private var cacheType = NSCache<NSString, UIImage>()
 }
 
 extension MemoryCacheManager: ImageCacheable {
     
     func setImage(_ image: UIImage, forKey key: String) {
-        cache.setObject(image, forKey: key as NSString)
+        cacheType.setObject(image, forKey: key as NSString)
     }
 
     func getImage(forKey key: String) -> UIImage? {
-        return cache.object(forKey: key as NSString)
+        return cacheType.object(forKey: key as NSString)
     }
     
     func clearCache() {
-        cache.removeAllObjects()
+        cacheType.removeAllObjects()
     }
 }
 #endif
