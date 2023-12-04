@@ -19,7 +19,12 @@ public extension UIImageView {
         let placeholder = placeholder?()
         if let placeholder { self.image = placeholder }
         
-        let key = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+        let key = url
+            .absoluteString
+            .addingPercentEncoding(
+                withAllowedCharacters: .urlHostAllowed
+            )!
+        
         let cacheManager = CacheManager.shared
         let cachedImage = cacheManager.getImage(forKey: key)
         
@@ -42,11 +47,8 @@ public extension UIImageView {
             .sink(receiveCompletion: { _ in
                 cancellable?.cancel()
             }, receiveValue: { [weak self] image in
-                guard let self, let image
-                else {
-                    cancellable?.cancel()
-                    return
-                }
+                
+                guard let self, let image else { return }
                 switch parameter.withAnimation {
                 case true:
                     self.setImageWithTransition(
