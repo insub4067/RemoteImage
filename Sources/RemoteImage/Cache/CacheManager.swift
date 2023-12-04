@@ -16,9 +16,9 @@ class CacheManager {
     private let diskCache = DiskCacheManager()
 }
 
-extension CacheManager: ImageCacheable {
+extension CacheManager {
     
-    func setImage(_ image: UIImage, forKey key: String) {
+    func setImage(_ image: UIImage, forKey key: String, cache: CacheType) {
         memoryCache.setImage(image, forKey: key)
         diskCache.setImage(image, forKey: key)
     }

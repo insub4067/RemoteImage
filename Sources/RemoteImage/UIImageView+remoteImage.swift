@@ -12,6 +12,7 @@ public extension UIImageView {
     
     func remoteImage(
         with url: URL,
+        cache: CacheType? = .memory,
         withAnimation: Bool = true,
         duration: CGFloat = 0.2,
         option: AnimationOptions = .transitionCrossDissolve,
@@ -22,21 +23,23 @@ public extension UIImageView {
         if let placeholder { self.image = placeholder }
         
         let key = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
-        let cache = CacheManager.shared
+        let cacheManager = CacheManager.shared
+        let cachedImage = cacheManager.getImage(forKey: key)
         
-        if let cachedImage = cache.getImage(forKey: key) {
-            if withAnimation {
+        if let cachedImage {
+            switch withAnimation {
+            case true:
                 self.setImageWithTransition(
-                    image: cachedImage,
+                    image: image,
                     duration: duration,
                     option: option
                 )
-            } else {
-                self.image = cachedImage
+            case false:
+                self.image = image
             }
             return
         }
-        
+      
         var cancellable: AnyCancellable?
         cancellable = URLSession.shared.dataTaskPublisher(for: url)
             .map { UIImage(data: $0.data) }
@@ -45,16 +48,24 @@ public extension UIImageView {
                 cancellable?.cancel()
             }, receiveValue: { [weak self] image in
                 guard let self = self, let image = image else { return }
-                if withAnimation {
+                
+                switch withAnimation {
+                case true:
                     self.setImageWithTransition(
                         image: image,
                         duration: duration,
                         option: option
                     )
-                } else {
+                case false:
                     self.image = image
                 }
-                cache.setImage(image, forKey: key)
+                
+                guard let cache else { return }
+                cacheManager.setImage(
+                    image,
+                    forKey: key,
+                    cache: cache
+                )
             })
     }
     
@@ -71,5 +82,9 @@ public extension UIImageView {
             completion: nil
         )
     }
+}
+
+public enum CacheType {
+    case memory, disk
 }
 #endif
