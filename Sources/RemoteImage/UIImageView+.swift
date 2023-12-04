@@ -21,7 +21,7 @@ public extension UIImageView {
         let placeholder = placeholder?()
         if let placeholder { self.image = placeholder }
         
-        let key = url.absoluteString
+        let key = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
         let cache = CacheManager.shared
         
         if let cachedImage = cache.getImage(forKey: key) {
