@@ -36,17 +36,17 @@ public extension UIImageView {
             }
             return
         }
-      
+        
         var cancellable: AnyCancellable?
-        cancellable = URLSession.shared.dataTaskPublisher(for: url)
-            .map { UIImage(data: $0.data) }
-            .receive(on: DispatchQueue.main)
+        cancellable = UIImage.remotePublisher(url: url)
             .sink(receiveCompletion: { _ in
                 cancellable?.cancel()
             }, receiveValue: { [weak self] image in
-                
-                guard let self = self, let image = image else { return }
-                
+                guard let self, let image
+                else {
+                    cancellable?.cancel()
+                    return
+                }
                 switch parameter.withAnimation {
                 case true:
                     self.setImageWithTransition(
