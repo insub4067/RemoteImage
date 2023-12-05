@@ -4,7 +4,7 @@
 //
 //  Created by 김인섭 on 12/5/23.
 //
-
+#if canImport(UIKit)
 import UIKit
 
 class CacheManager {
@@ -39,3 +39,4 @@ extension CacheManager {
         diskCache.clearCache()
     }
 }
+#endif
