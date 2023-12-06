@@ -7,7 +7,7 @@
 #if canImport(UIKit)
 import UIKit
 
-class DiskCacheManager {
+class DiskManager {
 
     private var directoryPath: URL? {
         FileManager.default
@@ -18,7 +18,7 @@ class DiskCacheManager {
     }
 }
 
-extension DiskCacheManager: ImageCacheable {
+extension DiskManager: ImageCacheable {
 
     func setImage(_ image: UIImage, forKey key: String) {
         

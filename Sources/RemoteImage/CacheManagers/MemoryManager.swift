@@ -7,12 +7,12 @@
 #if canImport(UIKit)
 import UIKit
 
-class MemoryCacheManager {
+class MemoryManager {
 
     private var cacheType = NSCache<NSString, UIImage>()
 }
 
-extension MemoryCacheManager: ImageCacheable {
+extension MemoryManager: ImageCacheable {
     
     func setImage(_ image: UIImage, forKey key: String) {
         cacheType.setObject(image, forKey: key as NSString)
