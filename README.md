@@ -1,7 +1,8 @@
 # 🛜 RemoteImage
 
 ## 🤔 What is RemoteImage?
-> You can get image with url and cache easily using RemoteImage. Support cache and animation for Image 
+> You can get image from url and cache easily. 
+Support options for cache and animation for Image 
 
 ## ✔️ Basic Example
 ```swift
