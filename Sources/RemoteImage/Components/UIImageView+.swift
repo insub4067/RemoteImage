@@ -19,54 +19,20 @@ public extension UIImageView {
         let placeholder = placeholder?()
         if let placeholder { self.image = placeholder }
         
-        let key = url
-            .absoluteString
-            .addingPercentEncoding(
-                withAllowedCharacters: .urlHostAllowed
-            )!
-        
-        let cacheManager = CacheManager.shared
-        let cachedImage = cacheManager.getImage(forKey: key)
-        
-        if let cachedImage {
+        Task {
+            let usecase = GetImageUseCase()
+            let image = try await usecase.execute(url: url)
             switch parameter.withAnimation {
             case true:
                 self.setImageWithTransition(
-                    image: cachedImage,
+                    image: image,
                     duration: parameter.duration,
                     option: parameter.option
                 )
             case false:
                 self.image = image
             }
-            return
         }
-        
-        var cancellable: AnyCancellable?
-        cancellable = UIImage.remotePublisher(url: url)
-            .sink(receiveCompletion: { _ in
-                cancellable?.cancel()
-            }, receiveValue: { [weak self] image in
-                
-                guard let self, let image else { return }
-                switch parameter.withAnimation {
-                case true:
-                    self.setImageWithTransition(
-                        image: image,
-                        duration: parameter.duration,
-                        option: parameter.option
-                    )
-                case false:
-                    self.image = image
-                }
-                
-                guard let cacheType = parameter.cacheType else { return }
-                cacheManager.setImage(
-                    image,
-                    forKey: key,
-                    cacheType: cacheType
-                )
-            })
     }
     
     func setImageWithTransition(

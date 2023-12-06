@@ -16,5 +16,10 @@ public extension UIImage {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
+    
+    static func remote(url: URL) async throws -> UIImage? {
+        let (data, _) = try await URLSession.shared.data(from: url)
+        return UIImage(data: data)
+    }
 }
 #endif
