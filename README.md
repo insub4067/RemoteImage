@@ -7,7 +7,6 @@ Support options for cache and animation for Image
 ## ✔️ Basic UIKit Example
 ```swift
 var imageView = UIImageView() 
-let url = URL(string: "https://www......")! // Image URL
 imageView.remoteImage(with: url) {
     .init(systemName: "person")! // Placeholder  
 }
