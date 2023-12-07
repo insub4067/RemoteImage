@@ -19,8 +19,12 @@ class CacheManager {
 extension CacheManager {
     
     func setImage(_ image: UIImage, forKey key: String, cacheType: CacheType) {
-        memoryCache.setImage(image, forKey: key)
-        diskCache.setImage(image, forKey: key)
+        switch cacheType {
+        case .memory:
+            memoryCache.setImage(image, forKey: key)
+        case .disk:
+            diskCache.setImage(image, forKey: key)
+        }
     }
     
     func getImage(forKey key: String) -> UIImage? {
