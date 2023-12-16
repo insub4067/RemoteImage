@@ -60,17 +60,20 @@ public struct RemoteImageParamter {
     public let withAnimation: Bool
     public let duration: CGFloat
     public let option: UIView.AnimationOptions
+    public let resizeWidth: CGFloat?
     
     public init(
         cacheType: CacheType? = .memory,
         withAnimation: Bool = true,
         duration: CGFloat = 0.2,
-        option: UIView.AnimationOptions = .transitionCrossDissolve
+        option: UIView.AnimationOptions = .transitionCrossDissolve,
+        resizeWidth: CGFloat? = .none
     ) {
         self.cacheType = cacheType
         self.withAnimation = withAnimation
         self.duration = duration
         self.option = option
+        self.resizeWidth = resizeWidth
     }
 }
 #endif
