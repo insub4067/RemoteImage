@@ -23,11 +23,12 @@ public extension UIImage {
     }
     
     func resized(toWidth width: CGFloat) -> UIImage {
-        let canvasSize = CGSize(width: width, height: CGFloat(ceil(width/size.width * size.height)))
-        UIGraphicsBeginImageContextWithOptions(canvasSize, false, scale)
-        defer { UIGraphicsEndImageContext() }
-        draw(in: CGRect(origin: .zero, size: canvasSize))
-        return UIGraphicsGetImageFromCurrentImageContext() ?? self
+        let scale = width / size.width
+        let height = size.height * scale
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: width, height: height))
+        return renderer.image { _ in
+            draw(in: CGRect(x: 0, y: 0, width: width, height: height))
+        }
     }
 }
 #endif
