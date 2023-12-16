@@ -37,7 +37,8 @@ let parameter = RemoteImageParamter( // Parameter for Cache and Transition
     cacheType: .disk,
     withAnimation: true,
     duration: 0.2,
-    option: .curveEaseIn
+    option: .curveEaseIn,
+    resizeWidth: 500
 )
 imageView.remoteImage(with: url, parameter: parameter) {
     .init(systemName: "person")! // Placeholder
