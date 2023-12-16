@@ -4,17 +4,9 @@
 > You can get image from url and cache easily. 
 Support options for cache and animation for Image 
 
-## ✔️ Basic UIKit Example
-```swift
-var imageView = UIImageView() 
-imageView.remoteImage(with: url) {
-    .init(systemName: "person")! // Placeholder  
-}
-```
-
 ## ✔️ Basic SwiftUI Example
 ```swift
-RemoteImage(with: url) { image in
+RemoteImage(url) { image in
     image
         .resizable()
         .scaledToFit()
@@ -29,11 +21,19 @@ RemoteImage(with: url) { image in
 }
 ```
 
+## ✔️ Basic UIKit Example
+```swift
+var imageView = UIImageView() 
+imageView.remoteImage(url) {
+    .init(systemName: "person")! // Placeholder  
+}
+```
+
 ## ✔️ Parameter Example
 ```swift
 var imageView = UIImageView()
 let url = URL(string: "https://www......")! // Image URL
-let parameter = RemoteImageParamter( // Parameter for Cache and Transition
+let parameter = RemoteImageParamter( // Parameter for Cache, Transition, Resize
     cacheType: .disk,
     withAnimation: true,
     duration: 0.2,

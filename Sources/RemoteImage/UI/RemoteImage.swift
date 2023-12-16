@@ -20,7 +20,7 @@ public struct RemoteImage<Content: View, Placeholder: View>: View {
     @State private  var image: UIImage? = .none
     
     public init(
-        url: URL?,
+        _ url: URL?,
         parameter: RemoteImageParamter = .init(),
         content: @escaping (Image) -> Content,
         placeholder: () -> Placeholder

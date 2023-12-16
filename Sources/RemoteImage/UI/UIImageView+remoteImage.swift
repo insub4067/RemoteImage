@@ -11,7 +11,7 @@ import Combine
 public extension UIImageView {
     
     func remoteImage(
-        with url: URL,
+        _ url: URL,
         parameter: RemoteImageParamter = .init(),
         placeholder: (() -> UIImage)? = .none
     ) {
