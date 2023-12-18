@@ -7,7 +7,7 @@
 #if canImport(UIKit)
 import UIKit
 
-class CacheManager {
+actor CacheManager {
 
     static let shared = CacheManager()
     private init() { }

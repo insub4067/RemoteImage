@@ -24,7 +24,7 @@ struct GetImageUseCase {
             )!
         
         let cacheManager = CacheManager.shared
-        let cachedImage = cacheManager.getImage(forKey: key)
+        let cachedImage = await cacheManager.getImage(forKey: key)
         
         if let cachedImage { return cachedImage }
         
@@ -36,7 +36,7 @@ struct GetImageUseCase {
         }
         
         if let cacheType {
-            cacheManager.setImage(image, forKey: key, cacheType: cacheType)
+            await cacheManager.setImage(image, forKey: key, cacheType: cacheType)
         }
         return image
     }
